@@ -8,6 +8,18 @@ async function load() {
   res.urls.map(({ name, url }) => addElement({ name, url }));
 }
 
+async function del({ url, name }) {
+  let urlR = "http://localhost:3000/?del=1&name=" + name + "&url=" + url;
+  console.log("sss", urlR);
+  return await fetch(url).then((data) => data.json());
+}
+
+async function create({ url, name }) {
+  let urlR = "http://localhost:3000/?create=1&name=" + name + "&url=" + url;
+  console.log("sss", urlR);
+  return await fetch(url).then((data) => data.json());
+}
+
 load();
 
 function addElement({ name, url }) {
@@ -27,8 +39,14 @@ function addElement({ name, url }) {
   ul.append(li);
 }
 
-function removeElement(el) {
-  if (confirm("Tem certeza que deseja deletar?")) el.parentNode.remove();
+async function removeElement(el) {
+  if (confirm("Tem certeza que deseja deletar?")) {
+    await del({
+      name: el.parentNode.textContent,
+      url: el.parentNode.children[0].href,
+    }).then((r = {}));
+    el.parentNode.remove();
+  }
 }
 
 form.addEventListener("submit", (event) => {
@@ -44,6 +62,7 @@ form.addEventListener("submit", (event) => {
 
   if (!/^http/.test(url)) return alert("Digite a url da maneira correta");
 
+  create({ name: name, url: url });
   addElement({ name, url });
 
   input.value = "";
