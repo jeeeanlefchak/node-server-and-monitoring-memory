@@ -11,13 +11,15 @@ async function load() {
 async function del({ url, name }) {
   let urlR = "http://localhost:3000/?del=1&name=" + name + "&url=" + url;
   console.log("sss", urlR);
-  return await fetch(url).then((data) => data.json());
+  return await fetch(urlR).then((data) => data.json());
 }
 
 async function create({ url, name }) {
   let urlR = "http://localhost:3000/?create=1&name=" + name + "&url=" + url;
   console.log("sss", urlR);
-  return await fetch(url).then((data) => data.json());
+  return await fetch(urlR).then((data) => {
+    return data.json();
+  });
 }
 
 load();
@@ -44,8 +46,9 @@ async function removeElement(el) {
     await del({
       name: el.parentNode.textContent,
       url: el.parentNode.children[0].href,
-    }).then((r = {}));
-    el.parentNode.remove();
+    }).then((r) => {
+      el.parentNode.remove();
+    });
   }
 }
 
@@ -62,8 +65,9 @@ form.addEventListener("submit", (event) => {
 
   if (!/^http/.test(url)) return alert("Digite a url da maneira correta");
 
-  create({ name: name, url: url });
-  addElement({ name, url });
+  create({ name: name, url: url }).then((r) => {
+    addElement({ name, url });
+  });
 
   input.value = "";
 });

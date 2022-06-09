@@ -25,12 +25,12 @@ http
     res.writeHead(200, {
       "Access-Control-Allow-Origin": "*",
     });
-    debugger;
     // all resources
     if (!name || !url) return res.end(JSON.stringify(data));
     if (del) {
-      // parametro opcional que vem na url que é boolean
-      data.urls = data.urls.filter((item) => String(item.url) !== String(url));
+      // parametro opcional que vem na url que é booleanString(item.url) !== String(url)
+      data.urls = data.urls.filter((item) => !url.includes(item.url));
+      console.log(data.urls);
       return writeFile((message) => res.end(message));
     } else if (create) {
       data.urls.push({ name, url });
