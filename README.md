@@ -1,5 +1,6 @@
 "# node-server-and-monitoring-memory" 
 
-npm stats.js
-cd http npm start node.js
+rodar os dois comandos a baixo
+node\http> node server.js
+node\http\api>node index.js
 
